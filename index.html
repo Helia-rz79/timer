@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: rgb(29, 3, 49);
+            background: linear-gradient(90deg, rgba(29, 3, 49, 1) 40%, rgba(103, 9, 121, 1) 100%, rgba(209, 0, 255, 0.9949229691876751) 100%);
+            height: 70vh;
+            font-family: "Share Tech Mono", monospace;
+        }
+
+        section {
+            width: 400px;
+            height: 220px;
+            margin: 200px auto 0;
+            border: 2px solid fuchsia;
+            box-shadow: 0 0 10px rgb(128, 0, 128);
+            position: relative;
+
+
+            &::after {
+                content: '';
+                display: flex;
+                border-bottom: 2px solid fuchsia;
+                border-right: 2px solid fuchsia;
+                box-shadow: 3px 3px 3px 0 #80008066;
+                width: 400px;
+                height: 200px;
+                position: absolute;
+                top: 15%;
+                right: -5%;
+                z-index: -1;
+            }
+
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            width: 230px;
+            height: 60px;
+            margin: 50px auto;
+
+            >h2 {
+                color: cyan;
+                text-shadow: 0 0 10px rgb(0, 128, 128);
+                font-size: 50px;
+            }
+        }
+
+        button {
+            width: 80px;
+            height: 30px;
+            border: 2px solid cyan;
+            background-color: inherit;
+            color: cyan;
+
+            &:first-of-type {
+                margin-left: 25px;
+            }
+        }
+
+        h3 {
+            color: orange;
+            text-shadow: 0 0 5px rgba(255, 128, 128, 1);
+            width: 250px;
+            margin: 50px auto 0;
+            font-size: 25px;
+            padding-left: 10px;
+        }
+
+       
+    </style>
+</head>
+
+<body>
+    <section>
+        <div class="row">
+            <h2>00</h2>
+            <h2>00</h2>
+            <h2>00</h2>
+        </div>
+        <button data-status="off">Start</button>
+        <button>Pause</button>
+        <button>Reset</button>
+        <button>Lap</button>
+
+    </section>
+    <h3 id="demo"></h3>
+    
+</body>
+<script>
+    const h2 = document.querySelectorAll('.row>h2')
+    const btn = document.querySelectorAll('section>button')
+    const demo = document.getElementById('demo')
+
+    let x
+    let ms = '00'
+    let s = '00'
+    let m = '00'
+
+    btn[0].addEventListener('click', (e) => {
+        if (e.target.getAttribute('data-status') == 'off') {
+            x = setInterval(() => {
+                if (ms < 99) {
+                    ms++
+                    if (ms < 10) {
+                        ms = '0' + ms
+                    }
+                } else {
+                    ms = 0
+                    if (s < 59) {
+                        s++
+                        if (s < 10) {
+                            s = '0' + s
+                        }
+                    } else {
+                        s = 0
+                        m++
+                        if (m < 10) {
+                            m = '0' + m
+                        }
+                    }
+
+                }
+
+                h2[2].innerHTML = ms
+                h2[1].innerHTML = s
+                h2[0].innerHTML = m
+            }, 10);
+            e.target.setAttribute('data-status', 'on')
+        }
+    })
+
+    btn[1].addEventListener('click', () => {
+        pause()
+
+    })
+    btn[2].addEventListener('click', () => {
+        pause()
+        ms = '00'
+        s = '00'
+        m = '00'
+        h2.forEach((val) => val.innerHTML = '00')
+    })
+    btn[3].addEventListener('click', () => {
+        demo.innerHTML += ' m:' + m + '  s:' + s + ' ms:' + ms + ' ,'
+
+    })
+
+    function pause() {
+        clearInterval(x)
+        btn[0].setAttribute('data-status', 'off')
+    }
+</script>
+
+</html>
